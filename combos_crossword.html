@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Combos Crossword</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+  body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    text-align: center;
+    background-color: #f4f4f7;
+    color: #333;
+    padding: 30px 20px;
+  }
+
+  h2 {
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+
+  table {
+    margin: auto;
+    border-collapse: collapse;
+  }
+
+  td {
+    width: 36px;
+    height: 36px;
+    position: relative;
+    padding: 0;
+  }
+
+  input {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-size: 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: background 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+    font-weight: 500;
+  }
+
+  input:focus {
+    outline: none;
+    background-color: #fffdf0;
+    box-shadow: 0 0 0 2px #6c63ff33;
+  }
+
+  .black {
+    background: none;
+    border: none;
+  }
+
+  .number {
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    font-size: 10px;
+    color: #666;
+  }
+
+  .clues {
+    max-width: 800px;
+    margin: 50px auto 20px;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    text-align: left;
+  }
+
+  .clues h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 4px;
+  }
+
+  .clues ul {
+    list-style: none;
+    padding-left: 0;
+    font-size: 15px;
+  }
+
+  .clues li {
+    margin-bottom: 8px;
+  }
+
+  button {
+    padding: 10px 20px;
+    background-color: #6c63ff;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: background 0.3s, box-shadow 0.2s;
+  }
+
+  button:hover {
+    background-color: #554fd8;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  }
+
+  #result {
+    margin-top: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    min-height: 20px;
+  }
+
+  input.correct {
+    background-color: #d0f5d8 !important;
+  }
+
+  input.incorrect {
+    background-color: #fce4e4 !important;
+  }
+
+.grid-container {
+  display: inline-block;
+  padding: 20px; /* extend photo outward */
+  background-image: url('./crossword_photo.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 10px; /* optional, rounded edges */
+  opacity: 0.30; /* make the background photo slightly transparent */
+}
+
+#subtitle {
+  font-size: 1.1em;
+  color: #555;
+  margin-top: -10px;
+  font-style: italic;
+  text-align: center;
+}
+
+#subtitle .no-italic {
+  font-style: normal;
+}
+
+/* Optional for visual improvement on small devices */
+@media (max-width: 600px) {
+  table {
+    transform: scale(0.9);
+    transform-origin: top left;
+  }
+
+  input {
+    font-size: 18px;
+    border-radius: 4px;
+  }
+
+  .clues {
+    flex-direction: column;
+    gap: 30px;
+    padding: 0 10px;
+  }
+
+  .clues h3 {
+    font-size: 16px;
+  }
+
+  .clues ul {
+    font-size: 14px;
+  }
+}
+</style>
+</head>
+<body>
+<h2>Combos Crossword</h2>
+<p id="subtitle">
+  Only a true combos can solve it <span class="no-italic">🙂</span>
+</p>
+<div class="grid-container">
+  <table id="grid">
+    <tr>
+      <td class="black" colspan="11"></td>
+      <td><div class="number">1</div><input maxlength="1" data-row="0" data-col="11" /></td>
+      <td class="black"></td>
+    </tr>
+    <tr>
+      <td class="black" colspan="8"></td>
+      <td><div class="number">2</div><input maxlength="1" data-row="1" data-col="8" /></td>
+      <td><input maxlength="1" data-row="1" data-col="9" /></td>
+      <td><input maxlength="1" data-row="1" data-col="10" /></td>
+      <td><input maxlength="1" data-row="1" data-col="11" /></td>
+      <td class="black"></td>
+    </tr>
+    <tr>
+      <td class="black" colspan="11"></td>
+      <td><input maxlength="1" data-row="2" data-col="11" /></td>
+      <td class="black"></td>
+    </tr>
+    <tr>
+      <td class="black" colspan="8"></td>
+      <td><div class="number">3</div><input maxlength="1" data-row="3" data-col="8" /></td>
+      <td class="black" colspan="2"></td>
+      <td><input maxlength="1" data-row="3" data-col="11" /></td>
+      <td class="black"></td>
+    </tr>
+    <tr>
+      <td class="black" colspan="7"></td>
+      <td><div class="number">4</div><input maxlength="1" data-row="4" data-col="7" /></td>
+      <td><input maxlength="1" data-row="4" data-col="8" /></td>
+      <td><input maxlength="1" data-row="4" data-col="9" /></td>
+      <td><input maxlength="1" data-row="4" data-col="10" /></td>
+      <td><input maxlength="1" data-row="4" data-col="11" /></td>
+      <td><input maxlength="1" data-row="4" data-col="12" /></td>
+    </tr>
+    <tr>
+      <td class="black" colspan="8"></td>
+      <td><input maxlength="1" data-row="5" data-col="8" /></td>
+      <td class="black" colspan="2"></td>
+      <td><input maxlength="1" data-row="5" data-col="11" /></td>
+      <td class="black"></td>
+    </tr>
+    <tr>
+      <td><div class="number">5</div><input maxlength="1" data-row="6" data-col="0" /></td>
+      <td><input maxlength="1" data-row="6" data-col="1" /></td>
+      <td><input maxlength="1" data-row="6" data-col="2" /></td>
+      <td><div class="number">6</div><input maxlength="1" data-row="6" data-col="3" /></td>
+      <td><input maxlength="1" data-row="6" data-col="4" /></td>
+      <td><input maxlength="1" data-row="6" data-col="5" /></td>
+      <td class="black" colspan="2"></td>
+      <td><input maxlength="1" data-row="6" data-col="8" /></td>
+      <td class="black" colspan="4"></td>
+    </tr>
+    <tr>
+      <td class="black" colspan="3"></td>
+      <td><input maxlength="1" data-row="7" data-col="3" /></td>
+      <td class="black" colspan="3"></td>
+      <td class="black"></td>
+      <td><input maxlength="1" data-row="7" data-col="8" /></td>
+      <td class="black" colspan="4"></td>
+    </tr>
+    <tr>
+      <td class="black" colspan="3"></td>
+      <td><div class="number">7</div><input maxlength="1" data-row="8" data-col="3" /></td>
+      <td><input maxlength="1" data-row="8" data-col="4" /></td>
+      <td><input maxlength="1" data-row="8" data-col="5" /></td>
+      <td><input maxlength="1" data-row="8" data-col="6" /></td>
+      <td><input maxlength="1" data-row="8" data-col="7" /></td>
+      <td><input maxlength="1" data-row="8" data-col="8" /></td>
+      <td class="black" colspan="4"></td>
+    </tr>
+    <tr>
+      <td class="black" colspan="8"></td>
+      <td><input maxlength="1" data-row="9" data-col="8" /></td>
+      <td class="black" colspan="4"></td>
+    </tr>
+  </table>
+</div>
+<br />
+<button onclick="check()">Check</button>
+<div id="result"></div>
+
+<div class="clues">
+  <div>
+    <h3>Across</h3>
+    <ul>
+      <li><strong>2.</strong> Your combo partner 🇬🇪</li>
+      <li><strong>4.</strong> El mejor mexicano del mundo 🇲🇽</li>
+      <li><strong>5.</strong> City we met</li>
+      <li><strong>7.</strong> Our university</li>
+    </ul>
+  </div>
+  <div>
+    <h3>Down</h3>
+    <ul>
+      <li><strong>1.</strong> Our group name</li>
+      <li><strong>3.</strong> FIFA weirdo ⚽</li>
+      <li><strong>6.</strong> Too young 👶</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+const solution = {
+  "0-11": "C", "1-11": "O", "2-11": "M", "3-11": "B", "4-11": "O", "5-11": "S",
+  "1-8": "S", "1-9": "O", "1-10": "P", "1-11": "O",
+  "4-7": "C", "4-8": "A", "4-9": "R", "4-10": "L", "4-11": "O", "4-12": "S",
+  "3-8": "V", "5-8": "S", "6-8": "I", "7-8": "L", "8-8": "I", "9-8": "S",
+  "6-0": "M", "6-1": "I", "6-2": "L", "6-3": "A", "6-4": "N", "6-5": "O",
+  "8-3": "P", "8-4": "O", "8-5": "L", "8-6": "I", "8-7": "M", "8-8": "I",
+  "7-3": "L"
+};
+
+let direction = "across";
+
+function cellExists(row, col) {
+  return document.querySelector(`input[data-row="${row}"][data-col="${col}"]`);
+}
+
+function updateDirectionFromCell(input) {
+  const row = parseInt(input.dataset.row);
+  const col = parseInt(input.dataset.col);
+
+  const hasLeft = cellExists(row, col - 1);
+  const hasRight = cellExists(row, col + 1);
+  const hasUp = cellExists(row - 1, col);
+  const hasDown = cellExists(row + 1, col);
+
+  const isAcross = hasLeft || hasRight;
+  const isDown = hasUp || hasDown;
+
+  if (isAcross && !isDown) {
+    direction = "across";
+  } else if (!isAcross && isDown) {
+    direction = "down";
+  } else if (isAcross && isDown) {
+    if (!hasUp) direction = "down";
+    else if (!hasLeft) direction = "across";
+  }
+}
+
+document.querySelectorAll("input").forEach(input => {
+  input.setAttribute("inputmode", "latin");
+  input.setAttribute("autocapitalize", "characters");
+  input.addEventListener("click", () => {
+    updateDirectionFromCell(input);
+  });
+
+input.addEventListener("input", (e) => {
+  let raw = input.value;
+  let letter = raw.slice(-1).toUpperCase(); // Take last typed character only
+
+  if (!/^[A-Z]$/.test(letter)) {
+    input.value = ""; // Clear invalid
+    return;
+  }
+
+  input.value = letter; // Force uppercase single letter
+
+  // Move to next cell
+  const row = parseInt(input.dataset.row);
+  const col = parseInt(input.dataset.col);
+  const nextInput = direction === "across"
+    ? cellExists(row, col + 1)
+    : cellExists(row + 1, col);
+
+  if (nextInput) {
+    setTimeout(() => {
+      nextInput.focus();
+    }, 0);
+  }
+});
+
+input.addEventListener("keydown", (e) => {
+  const key = e.key;
+  const row = parseInt(input.dataset.row);
+  const col = parseInt(input.dataset.col);
+
+  // Handle Tab / Shift+Tab to move focus and update direction
+  if (key === "Tab") {
+    // Let browser move focus first, then update direction
+    setTimeout(() => {
+      const active = document.activeElement;
+      if (active && active.tagName === "INPUT") {
+        updateDirectionFromCell(active);
+      }
+    }, 0);
+    return; // Let tab behave normally
+  }
+
+  // Handle Backspace
+  if (key === "Backspace") {
+    if (input.value === "") {
+      let prevInput;
+      if (direction === "across") prevInput = cellExists(row, col - 1);
+      else if (direction === "down") prevInput = cellExists(row - 1, col);
+
+      if (prevInput) {
+        prevInput.value = "";
+        prevInput.focus();
+        e.preventDefault();
+      }
+    }
+    return;
+  }
+
+  // Handle letters A-Z
+  const isLetter = /^[a-zA-Z]$/.test(key);
+  if (!isLetter) return;
+
+  // Prevent typing again in last cell
+  let nextInput;
+  if (direction === "across") nextInput = cellExists(row, col + 1);
+  else if (direction === "down") nextInput = cellExists(row + 1, col);
+
+  if (!nextInput && input.value !== "") {
+    e.preventDefault(); // Block overwrite
+    return;
+  }
+
+  e.preventDefault(); // We handle input manually
+  input.value = key.toUpperCase();
+
+  if (nextInput) nextInput.focus();
+});
+});
+
+function check() {
+  const inputs = document.querySelectorAll("input");
+  let correct = true;
+  inputs.forEach(input => {
+    const row = input.dataset.row;
+    const col = input.dataset.col;
+    const key = `${row}-${col}`;
+    const val = input.value.toUpperCase();
+
+    input.classList.remove("correct", "incorrect");
+
+    if (solution[key] !== val) {
+      input.classList.add("incorrect");
+      correct = false;
+    } else {
+      input.classList.add("correct");
+    }
+  });
+
+  const result = document.getElementById("result");
+
+  if (correct) {
+    result.style.color = "#008000";
+    // Replace \n with <br> and use innerHTML for line breaks
+    result.innerHTML = "Siii you are combos!!!<br>Feliz cumpleaños Carlitosss! 🎉";
+  } else {
+    result.style.color = "#B22222";
+    result.textContent = "Aha! I knew it you weren't real combos!";
+  }
+}
+</script>
+
+</body>
+</html>
